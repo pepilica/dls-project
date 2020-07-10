@@ -7,7 +7,6 @@ import deepmux
 from consts import DEEPMUX_TOKEN
 
 
-
 def gram(tensor):
     B, C, H, W = tensor.shape
     x = tensor.view(B, C, H * W)
@@ -15,17 +14,14 @@ def gram(tensor):
     return torch.bmm(x, x_t) / (C * H * W)
 
 
-# Load image file
 def load_image(path):
     img = cv2.imread(path)
     return img
 
 
-# Show image
 def show(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = np.array(img / 255).clip(0, 1)
-
     plt.figure(figsize=(10, 5))
     plt.imshow(img)
     plt.show()
@@ -68,12 +64,12 @@ def ttoi(tensor):
     return img
 
 
-def reg_models(model, styles):
+def reg_models(model, styles, suffix):
     model_temp = model()
     names = []
     for style in styles[0:]:
         model_temp.load_state_dict(torch.load(style + ".pth"))
-        model_name = style + '_pepilica_gan_project'
+        model_name = style + suffix
         model_nothing = deepmux.create_model(pytorch_model=model_temp,
                                              model_name=model_name,
                                              input_shape=[1, 3, 256, 256],
@@ -83,3 +79,4 @@ def reg_models(model, styles):
             break
         names.append(model_name)
     return names
+

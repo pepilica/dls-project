@@ -2,11 +2,6 @@ from torch import nn
 
 
 class TransformerNetwork(nn.Module):
-    """Feedforward Transformation Network without Tanh
-    reference: https://arxiv.org/abs/1603.08155 
-    exact architecture: https://cs.stanford.edu/people/jcjohns/papers/fast-style/fast-style-supp.pdf
-    """
-
     def __init__(self):
         super(TransformerNetwork, self).__init__()
         self.ConvBlock = nn.Sequential(
@@ -66,15 +61,15 @@ class ConvLayer(nn.Module):
 
         # Normalization Layers
         self.norm_type = norm
-        if (norm == "instance"):
+        if norm == "instance":
             self.norm_layer = nn.InstanceNorm2d(out_channels, affine=True)
-        elif (norm == "batch"):
+        elif norm == "batch":
             self.norm_layer = nn.BatchNorm2d(out_channels, affine=True)
 
     def forward(self, x):
         x = self.reflection_pad(x)
         x = self.conv_layer(x)
-        if (self.norm_type == "None"):
+        if self.norm_type == "None":
             out = x
         else:
             out = self.norm_layer(x)
@@ -82,11 +77,6 @@ class ConvLayer(nn.Module):
 
 
 class ResidualLayer(nn.Module):
-    """
-    Deep Residual Learning for Image Recognition
-    https://arxiv.org/abs/1512.03385
-    """
-
     def __init__(self, channels=128, kernel_size=3):
         super(ResidualLayer, self).__init__()
         self.conv1 = ConvLayer(channels, channels, kernel_size, stride=1)
@@ -112,14 +102,14 @@ class DeconvLayer(nn.Module):
 
         # Normalization Layers
         self.norm_type = norm
-        if (norm == "instance"):
+        if norm == "instance":
             self.norm_layer = nn.InstanceNorm2d(out_channels, affine=True)
-        elif (norm == "batch"):
+        elif norm == "batch":
             self.norm_layer = nn.BatchNorm2d(out_channels, affine=True)
 
     def forward(self, x):
         x = self.conv_transpose(x)
-        if (self.norm_type == "None"):
+        if self.norm_type == "None":
             out = x
         else:
             out = self.norm_layer(x)
