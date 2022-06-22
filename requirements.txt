@@ -3,7 +3,7 @@ Pillow==7.1.2
 aiogram==2.9.2
 deepmux==0.3.1
 matplotlib==3.2.2
-numpy==1.19.0
+numpy==1.22.0
 opencv-python==4.2.0.34
 pandas==1.0.5
 torch==1.5.1
